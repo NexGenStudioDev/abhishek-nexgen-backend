@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+   
+    "target": "es2016",                                 
+    "module": "Node16",                             
+    "rootDir": "./",                                    
+    "moduleResolution": "node16",                    
+    "baseUrl": "./src",                                 
+    "outDir": "./dist",                                                             
+    "allowJs": true,                             
+    "checkJs": true,                                                
+    "removeComments": true,                         
+    "allowSyntheticDefaultImports": true,           
+    // "esModuleInterop": true,                            
+    "forceConsistentCasingInFileNames": true,    
+    "strict": true,                                      
+    "skipLibCheck": true                         
+  },
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
