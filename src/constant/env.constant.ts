@@ -1,8 +1,6 @@
 import { config } from 'dotenv';
 
-
 config();
-
 
 interface EnvConstants {
   PORT: number;
@@ -11,13 +9,11 @@ interface EnvConstants {
   Base_url?: string;
 }
 
-
 const env_constant: EnvConstants = {
   PORT: process.env.PORT ? Number(process.env.PORT) : 8000,
-  DB_URL: process.env.DB_URL, 
+  DB_URL: process.env.DB_URL,
   Base_url: process.env.Base_url,
   bcryptSalt: process.env.bcryptSalt,
 };
-
 
 export default Object.freeze(env_constant);

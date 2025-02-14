@@ -1,9 +1,7 @@
+import express from 'express';
+import { AuthRoutes } from '../api/v1/Auth/Auth.routes';
 
-import express from "express";
 const app = express();
-import { AuthRoutes } from "api/v1/Auth/Auth.routes";
-import envConstant from "constant/env.constant";
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

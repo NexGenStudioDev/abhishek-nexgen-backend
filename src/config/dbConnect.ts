@@ -1,8 +1,5 @@
-import envConstant from 'constant/env.constant';
-import { string } from 'joi';
+import envConstant from '../constant/env.constant';
 import mongoose from 'mongoose';
-
-
 
 let DbConnect = async () => {
   try {

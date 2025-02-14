@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose';
-import bcrypt from 'bcrypt-nodejs'; 
+import bcrypt from 'bcrypt-nodejs';
 import { number, string } from 'joi';
-import envConstant from 'constant/env.constant';
 
 let AuthSchema = new Schema({
   name: {
@@ -13,7 +12,7 @@ let AuthSchema = new Schema({
     type: String,
     required: true,
     unique: [true, 'Email already exists'],
-    lowercase: true, 
+    lowercase: true,
   },
 
   password: {
@@ -53,39 +52,29 @@ let AuthSchema = new Schema({
   },
 });
 
+// AuthSchema.statics.hashPassword = async function (password: string) {
+//     try {
+//       let salt = bcrypt.genSaltSync(10);
+//       let hash = bcrypt.hashSync(password, envConstant.bcryptSalt);
+//       return hash;
+//     } catch (error) {
+//       throw new Error('Error hashing password');
+//     }
+// }
 
+//   AuthSchema.methods.comparePassword = async function (candidatePassword: string) {
+//     try {
+//       let Compared_Password = bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
 
-AuthSchema.statics.hashPassword = async function (password: string) {
-    try {
-      let salt = bcrypt.genSaltSync(10);
-      let hash = bcrypt.hashSync(password, envConstant.bcryptSalt);
-      return hash;
-    } catch (error) {
-      throw new Error('Error hashing password');
-    }
-}
-  
+//         if (err) {
+//           throw new Error('Error comparing passwords');
+//         }
+//     });
 
-  AuthSchema.methods.comparePassword = async function (candidatePassword: string) {
-    try {
-      let Compared_Password = bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
-       
-
-
-
-
-        if (err) {
-          throw new Error('Error comparing passwords');
-        }
-    });
-
-    return Compared_Password;
-    } catch (error) {
-      throw new Error('Error comparing passwords');
-    }
-  };
-  
+//     return Compared_Password;
+//     } catch (error) {
+//       throw new Error('Error comparing passwords');
+//     }
+//   };
 
 export default model('Auth', AuthSchema);
-
-

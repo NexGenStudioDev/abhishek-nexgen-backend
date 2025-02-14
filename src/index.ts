@@ -1,19 +1,16 @@
-import app from "routes/app";
+import app from './routes/app';
 
+import envConstant from './constant/env.constant';
+import DbConnect from './config/dbConnect';
 
-
-
-import DbConnect from "config/dbConnect";
-import envConstant from "constant/env.constant";
-
-
+console.log('envConstant.PORT', envConstant.PORT);
 
 app.listen(envConstant.PORT, async () => {
-    try {
-      console.log(`Server is running on port ${envConstant.PORT}`);
-      await DbConnect();
-    } catch (error) {
-      console.log(error);
-      console.log('Server failed to start');
-    }
+  try {
+    console.log(`Server is running on port ${envConstant.PORT}`);
+    await DbConnect();
+  } catch (error) {
+    console.log(error);
+    console.log('Server failed to start');
+  }
 });
