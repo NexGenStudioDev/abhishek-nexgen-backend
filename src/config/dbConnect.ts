@@ -1,7 +1,7 @@
 import envConstant from '../constant/env.constant';
 import mongoose from 'mongoose';
 
-let DbConnect = async () => {
+const DbConnect = async () => {
   try {
     await mongoose.connect(envConstant.DB_URL as string);
 

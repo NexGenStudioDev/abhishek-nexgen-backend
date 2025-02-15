@@ -5,7 +5,7 @@ class SendResponse {
     res: Response,
     statusCode: number,
     message: string,
-    data: any = null,
+    data: unknown,
   ) {
     return res.status(statusCode).json({
       message,
@@ -13,15 +13,10 @@ class SendResponse {
     });
   }
 
-  static error(
-    res: Response,
-    statusCode: number,
-    message: string,
-    error: any = null,
-  ) {
+  static error(res: Response, statusCode: number, message: string) {
     return res.status(statusCode).json({
       message,
-      error,
+      error: true,
     });
   }
 }

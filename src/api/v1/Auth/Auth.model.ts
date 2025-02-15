@@ -1,8 +1,23 @@
-import { Schema, model } from 'mongoose';
-import bcrypt from 'bcrypt-nodejs';
-import { number, string } from 'joi';
+import { Schema, model, Document } from 'mongoose';
+import bcrypt from 'bcryptjs';
+import envConstant from '../../../constant/env.constant';
 
-let AuthSchema = new Schema({
+interface IAuth extends Document {
+  name: string;
+  email: string;
+  password: string;
+  Technology_tools: Array<{
+    name: string;
+    description: string;
+    image: string;
+    link: string;
+  }>;
+  role: string;
+  hashPassword(password: string): Promise<string>;
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
+
+const AuthSchema = new Schema<IAuth>({
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -52,29 +67,15 @@ let AuthSchema = new Schema({
   },
 });
 
-// AuthSchema.statics.hashPassword = async function (password: string) {
-//     try {
-//       let salt = bcrypt.genSaltSync(10);
-//       let hash = bcrypt.hashSync(password, envConstant.bcryptSalt);
-//       return hash;
-//     } catch (error) {
-//       throw new Error('Error hashing password');
-//     }
-// }
+AuthSchema.methods.hashPassword = async function (
+  password: string,
+): Promise<string> {
+  return bcrypt.hashSync(
+    password,
+    bcrypt.genSaltSync(Number(envConstant.bcryptSalt)),
+  );
+};
 
-//   AuthSchema.methods.comparePassword = async function (candidatePassword: string) {
-//     try {
-//       let Compared_Password = bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
+const AuthModel = model<IAuth>('Auth', AuthSchema);
 
-//         if (err) {
-//           throw new Error('Error comparing passwords');
-//         }
-//     });
-
-//     return Compared_Password;
-//     } catch (error) {
-//       throw new Error('Error comparing passwords');
-//     }
-//   };
-
-export default model('Auth', AuthSchema);
+export default AuthModel;

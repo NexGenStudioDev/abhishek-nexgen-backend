@@ -12,9 +12,14 @@ export const AuthController = {
     try {
       const { name, email, password, role } = req.body;
 
-      //  let hashPassword =   AuthModel.hashPassword(password);
+      console.log('req.body',req.body);
+      let AuthInstance = new AuthModel();
 
-      // const user = await Auth_Service.signUp({ name, email, hashPassword, role });
+      let hashPassword = await AuthInstance.hashPassword(password);
+
+      console.log('hash password',hashPassword);
+
+      const user = await Auth_Service.signUp({ name, email, hashPassword, role });
 
       SendResponse.success(
         res,
