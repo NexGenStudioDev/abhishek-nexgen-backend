@@ -1,8 +1,5 @@
 import { createAuth_Validator } from './Auth.validator';
 
-import bcrypt from 'bcrypt-nodejs'; // Assuming you use bcrypt for hashing
-import jwt from 'jsonwebtoken';
-
 import AuthConstant from './Auth.constant';
 import AuthModel from './Auth.model';
 
