@@ -1,31 +1,39 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { Auth_Service } from './Auth.service';
-
-import { number } from 'joi';
 import AuthModel from './Auth.model';
 import SendResponse from '../../../utils/SendResponse';
 import StatusConstant from '../../../constant/Status.constant';
+import AuthDal from './Auth.dal';
+import AuthConstant from './Auth.constant';
 
 export const AuthController = {
   signUp: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, email, password, role } = req.body;
+      const { name, email, Pasword } = req.body;
 
-      console.log('req.body',req.body);
+      let Find_User = await AuthDal.FIND_byEmail(email);
+
+      if (Find_User) {
+        throw new Error('User already exists');
+      }
+
       let AuthInstance = new AuthModel();
 
-      let hashPassword = await AuthInstance.hashPassword(password);
+      let hashPassword = await AuthInstance.hashPassword(Pasword);
 
-      console.log('hash password',hashPassword);
-
-      const user = await Auth_Service.signUp({ name, email, hashPassword, role });
+      const user = await Auth_Service.signUp({
+        name: name,
+        email: email,
+        hashPassword: hashPassword,
+        role: 'Admin',
+      });
 
       SendResponse.success(
         res,
         StatusConstant.CREATED,
         'User created successfully',
-        'hii',
+        user,
       );
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
@@ -38,7 +46,25 @@ export const AuthController = {
 
       const user = await Auth_Service.signIn({ email, password });
 
-      SendResponse.success(res, StatusConstant.OK, 'Login successful', user);
+      const token = await AuthDal.Encrept_Email(email);
+
+      res.cookie('token', token);
+
+      let data = await AuthDal.User_Data(user, token);
+
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        AuthConstant.LOGIN_SUCCESS,
+        data,
+      );
+    } catch (error: any) {
+      SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
+    }
+  },
+
+  Remove_Auth_User: async (req: Request, res: Response): Promise<void> => {
+    try {
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }

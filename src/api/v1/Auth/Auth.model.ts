@@ -1,11 +1,12 @@
-import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import envConstant from '../../../constant/env.constant';
+import AuthConstant from './Auth.constant';
+import { Schema, model, Document } from 'mongoose';
 
 interface IAuth extends Document {
   name: string;
   email: string;
   password: string;
+  approved: boolean;
   Technology_tools: Array<{
     name: string;
     description: string;
@@ -14,7 +15,7 @@ interface IAuth extends Document {
   }>;
   role: string;
   hashPassword(password: string): Promise<string>;
-  comparePassword(candidatePassword: string): Promise<boolean>;
+  comparePassword(hashPassword: string, password: string): Promise<boolean>;
 }
 
 const AuthSchema = new Schema<IAuth>({
@@ -65,15 +66,25 @@ const AuthSchema = new Schema<IAuth>({
     default: 'Super Admin',
     required: [true, 'Role is required'],
   },
+
+  approved: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
-AuthSchema.methods.hashPassword = async function (
+AuthSchema.methods.hashPassword = async function (password: string) {
+  const salt = bcrypt.genSaltSync(AuthConstant.SALT_ROUNDS);
+  const hash = bcrypt.hashSync(password, salt);
+  return hash;
+};
+
+AuthSchema.methods.comparePassword = async function (
+  hashPassword: string,
   password: string,
-): Promise<string> {
-  return bcrypt.hashSync(
-    password,
-    bcrypt.genSaltSync(Number(envConstant.bcryptSalt)),
-  );
+) {
+  return bcrypt.compare(hashPassword, password);
 };
 
 const AuthModel = model<IAuth>('Auth', AuthSchema);

@@ -19,15 +19,33 @@ export const createAuth_Validator = Joi.object({
       'string.email': 'Email must be a valid email address',
     }),
 
-  password: Joi.string().min(8).required().messages({
+  Password: Joi.string().min(4).required().messages({
     'string.base': 'Password must be a string',
     'string.min': 'Password should have at least {#limit} characters',
     'any.required': 'Password is required',
   }),
 
-  role: Joi.string().valid('admin', 'user', 'moderator').required().messages({
+  role: Joi.string().valid('Super Admin', 'Admin').required().messages({
     'string.base': 'Role must be a string',
     'any.required': 'Role is required',
     'any.only': 'Role must be one of [admin, user, moderator]',
+  }),
+});
+
+export const loginAuth_Validator = Joi.object({
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required()
+    .messages({
+      'string.base': 'Email must be a string',
+      'string.empty': 'Email is required',
+      'any.required': 'Email is required',
+      'string.email': 'Email must be a valid email address',
+    }),
+
+  Password: Joi.string().min(4).required().messages({
+    'string.base': 'Password must be a string',
+    'string.min': 'Password should have at least {#limit} characters',
+    'any.required': 'Password is required',
   }),
 });
