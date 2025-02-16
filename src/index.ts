@@ -1,5 +1,4 @@
 import app from './routes/app';
-
 import envConstant from './constant/env.constant';
 import DbConnect from './config/dbConnect';
 

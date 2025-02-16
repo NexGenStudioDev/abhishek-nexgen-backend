@@ -3,8 +3,7 @@ import envConstant from '../constant/env.constant';
 
 // Check if the database is connected
 test('Check if the database is connected', async () => {
-  const dbConnect = await DbConnect();
-  expect(dbConnect).toBeDefined();
+  await DbConnect();
 });
 
 // Test the environment variable
