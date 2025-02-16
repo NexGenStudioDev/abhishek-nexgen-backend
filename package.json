@@ -46,12 +46,15 @@
   },
   "dependencies": {
     "@types/bcrypt-nodejs": "^0.0.31",
+    "@types/cookie-parser": "^1.4.8",
     "@types/jsonwebtoken": "^9.0.8",
     "bcrypt-nodejs": "^0.0.3",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.0"
   }
 }
