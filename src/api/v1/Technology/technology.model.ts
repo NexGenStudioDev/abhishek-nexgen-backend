@@ -11,10 +11,10 @@ interface ITechnology extends Document {
 
 const TechnologySchema: Schema = new Schema(
   {
-    name: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    image: { type: String, required: true },
-    link: { type: String, required: true },
+    name: { type: String, required: [true, 'name is required'], unique: true },
+    description: { type: String, required: [true, 'description is required'] },
+    image: { type: String, required: [true, 'image url is required'] },
+    link: { type: String, required: [true, 'link url is requiured'] },
   },
   {
     timestamps: true,
