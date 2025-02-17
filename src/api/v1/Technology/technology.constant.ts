@@ -15,7 +15,7 @@ const TechnologyConstant: TechnologyConstantType = {
   TECHNOLOGY_CREATED_FAILED: 'Technology creation failed',
   TECHNOLOGY_FETCHED: 'Technology fetched successfully',
   TECHNOLOGY_UPDATE: 'Technology updated successfully',
-  TECHNOLOGY_UPDATE_FAILED: 'Technology update failed',
+  TECHNOLOGY_UPDATE_FAILED: 'Failed to update technology',
   TECHNOLOGY_DELETE: 'Technology deleted successfully',
   TECHNOLOGY_DELETE_FAILED: 'Technology delete failed',
   TECHNOLOGY_NOT_FOUND: 'Technology not found',

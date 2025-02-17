@@ -25,12 +25,12 @@ class Auth_MiddleWate {
       }
 
       next();
-    } catch (error : unknown) {
-        if (error instanceof Error) {
-            SendResponse.error(res, 400, error.message);
-          } else {
-            SendResponse.error(res, 400, 'An unknown error occurred');
-          }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        SendResponse.error(res, 400, error.message);
+      } else {
+        SendResponse.error(res, 400, 'An unknown error occurred');
+      }
     }
   }
 }

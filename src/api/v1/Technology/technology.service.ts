@@ -1,9 +1,13 @@
 import { ErrorReport } from 'joi';
 import Technology from './technology.model';
 import technologyConstant from './technology.constant';
+import {
+  validateTechnology,
+  validateTechnologyUpdate,
+} from './technology.validator';
+import technologyDal from './technology.dal';
 
 class TechnologyService {
-  // Create a new technology
   public createTechnology = async ({
     name,
     description,
@@ -16,25 +20,42 @@ class TechnologyService {
     link: string;
   }) => {
     try {
-      const technology = await Technology.create({
+      const { error } = validateTechnology.validate({
         name,
         description,
         image,
         link,
       });
 
-      if (!technology) {
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const createTechnology = await Technology.create({
+        name,
+        description,
+        image,
+        link,
+      });
+
+      if (!createTechnology) {
         throw new Error(technologyConstant.TECHNOLOGY_CREATED_FAILED);
       }
+
+      return createTechnology;
     } catch (error) {
       throw new Error((error as Error).message);
     }
   };
 
-  // Get all technologies
   public getTechnologies = async () => {
     try {
-      return await Technology.find();
+      let find_all_technologies = await technologyDal.findAllTechnologies();
+      if (!find_all_technologies) {
+        new Error(technologyConstant.TECHNOLOGY_NOT_FOUND);
+      }
+
+      return find_all_technologies;
     } catch (error) {
       throw new Error(
         `Error fetching technologies: ${(error as ErrorReport).message}`,
@@ -42,10 +63,14 @@ class TechnologyService {
     }
   };
 
-  // Get a technology by ID
   public getTechnologyById = async (id: string) => {
     try {
-      return await Technology.findById(id);
+      let FindByid = await technologyDal.findTechnologyById(id);
+      if (!FindByid) {
+        new Error(technologyConstant.TECHNOLOGY_NOT_FOUND);
+      }
+
+      return FindByid;
     } catch (error) {
       throw new Error(
         `Error fetching technology by ID: ${(error as ErrorReport).message}`,
@@ -53,10 +78,42 @@ class TechnologyService {
     }
   };
 
-  // Update a technology by ID
-  public updateTechnology = async (id: string, data: any) => {
+  public updateTechnology = async (
+    _id: string,
+    name: string,
+    description: string,
+    image: string,
+    link: string,
+  ) => {
     try {
-      return await Technology.findByIdAndUpdate(id, data, { new: true });
+      let { error } = validateTechnologyUpdate.validate({
+        name,
+        description,
+        image,
+        link,
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      let Update_Technology = await Technology.findByIdAndUpdate(
+        _id,
+        {
+          $set: {
+            name,
+            description,
+            image,
+            link,
+          },
+        },
+        { new: true },
+      );
+
+      if (!Update_Technology) {
+        return false;
+      }
+
+      return Update_Technology;
     } catch (error) {
       throw new Error(
         `Error updating technology: ${(error as ErrorReport).message}`,
@@ -64,10 +121,12 @@ class TechnologyService {
     }
   };
 
-  // Delete a technology by ID
   public deleteTechnology = async (id: string) => {
     try {
-      return await Technology.findByIdAndDelete(id);
+
+      let deleteTechnology_By_Id = await technologyDal.findAndDeleteTechnologyById(id)
+      return deleteTechnology_By_Id;
+      
     } catch (error) {
       throw new Error(
         `Error deleting technology: ${(error as ErrorReport).message}`,
