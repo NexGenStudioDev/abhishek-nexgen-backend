@@ -31,6 +31,7 @@ class Auth_MiddleWate {
           } else {
             SendResponse.error(res, 400, 'An unknown error occurred');
           }
+
     }
   }
 }
