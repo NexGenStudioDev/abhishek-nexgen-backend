@@ -12,6 +12,9 @@ export const AuthController = {
     try {
       const { name, email, Pasword } = req.body;
 
+      console.log('req.body', req.body);
+      let AuthInstance = new AuthModel();
+      
       let Find_User = await AuthDal.FIND_byEmail(email);
 
       if (Find_User) {
@@ -20,6 +23,14 @@ export const AuthController = {
 
       let AuthInstance = new AuthModel();
 
+      console.log('hash password', hashPassword);
+
+      const user = await Auth_Service.signUp({
+        name,
+        email,
+        hashPassword,
+        role,
+        
       let hashPassword = await AuthInstance.hashPassword(Pasword);
 
       const user = await Auth_Service.signUp({
