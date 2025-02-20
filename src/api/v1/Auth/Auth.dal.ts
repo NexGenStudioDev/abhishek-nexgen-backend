@@ -68,6 +68,25 @@ class Auth_Dal {
       throw new Error(AuthConstant.FAIL_TO_DECRYPT_TOKEN);
     }
   };
+
+
+  public isApproved = async (email: string) => {
+    try {
+      let find_User = await AuthModel.findOne({
+        email: email,
+        isApproved: true,
+      });
+
+      if (find_User) {
+        return true;
+      }
+      return false;
+    } catch (error: any) {
+      throw new Error(AuthConstant.NOT_APPROVED);
+    }
+  };
+
+
 }
 
 export default new Auth_Dal();

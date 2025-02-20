@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 const DbConnect = async () => {
   try {
+  
     await mongoose.connect(envConstant.DB_URL as string);
 
     mongoose.connection.on('connected', () => {

@@ -1,0 +1,11 @@
+node_modules
+*.log
+test/
+.git
+.env
+eslint.config.mjs
+jest.config.js 
+nodemon.json
+prettierrc
+prettierrcignore
+.vscode

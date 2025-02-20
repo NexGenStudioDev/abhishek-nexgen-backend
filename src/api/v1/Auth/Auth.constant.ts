@@ -7,6 +7,7 @@ type AuthConstants = {
   INVALID_TOKEN: string;
   FAIL_TO_ENCREPT_EMAIL: string;
   UPDATE: string;
+  NOT_APPROVED: string;
   FAIL_TO_FIND_USER: string;
   LOGIN_SUCCESS: string;
   NOT_SUPER_ADMIN: string;
@@ -21,6 +22,7 @@ const Auth_Constant: AuthConstants = {
   LOGIN_SUCCESS: 'Login Success',
   FAIL_TO_DECRYPT_TOKEN: 'Failed to decrypt token',
   INVALID_TOKEN: 'Invalid Token',
+  NOT_APPROVED: 'User not approved',
   FAIL_TO_ENCREPT_EMAIL: 'Failed to encrept email',
   FETCHED: 'User fetched successfully',
   INCORECT_PASSWORD: 'Incorrect password',
