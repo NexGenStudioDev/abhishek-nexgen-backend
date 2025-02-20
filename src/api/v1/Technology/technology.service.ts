@@ -123,10 +123,9 @@ class TechnologyService {
 
   public deleteTechnology = async (id: string) => {
     try {
-
-      let deleteTechnology_By_Id = await technologyDal.findAndDeleteTechnologyById(id)
+      let deleteTechnology_By_Id =
+        await technologyDal.findAndDeleteTechnologyById(id);
       return deleteTechnology_By_Id;
-      
     } catch (error) {
       throw new Error(
         `Error deleting technology: ${(error as ErrorReport).message}`,
