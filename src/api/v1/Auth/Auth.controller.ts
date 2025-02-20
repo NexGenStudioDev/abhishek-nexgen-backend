@@ -12,7 +12,6 @@ export const AuthController = {
     try {
       const { name, email, Pasword } = req.body;
 
-     
       let AuthInstance = new AuthModel();
 
       let Find_User = await AuthDal.FIND_byEmail(email);
@@ -67,7 +66,6 @@ export const AuthController = {
   logout: async (req: Request, res: Response): Promise<void> => {
     try {
       res.clearCookie('token');
-      
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }

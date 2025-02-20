@@ -16,13 +16,12 @@ class Auth_MiddleWate {
         throw new Error('Token is required');
       }
 
-      
       const verify = await AuthDal.Verify_Token(token);
-      
+
       const isSuper_Admin = await AuthDal.Check_Super_Admin(verify.email);
 
       const isApproved = await AuthDal.isApproved(verify.email);
-      
+
       if (!isApproved) {
         throw new Error(AuthConstant.NOT_APPROVED);
       }

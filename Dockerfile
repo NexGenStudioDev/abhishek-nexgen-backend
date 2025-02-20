@@ -35,3 +35,6 @@ CMD ["npm", "run" ,"start"]
 # docker-compose up -d 
 # --build means build the image again
 # -d means run in detached mode (background)
+
+# Rebuild the image
+# docker-compose up -d --build

@@ -69,7 +69,6 @@ class Auth_Dal {
     }
   };
 
-
   public isApproved = async (email: string) => {
     try {
       let find_User = await AuthModel.findOne({
@@ -85,8 +84,6 @@ class Auth_Dal {
       throw new Error(AuthConstant.NOT_APPROVED);
     }
   };
-
-
 }
 
 export default new Auth_Dal();
