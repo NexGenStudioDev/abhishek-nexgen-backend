@@ -20,6 +20,12 @@ class Auth_MiddleWate {
 
       const isSuper_Admin = await AuthDal.Check_Super_Admin(verify.email);
 
+      const isApproved = await AuthDal.isApproved(verify.email);
+
+      if (!isApproved) {
+        throw new Error(AuthConstant.NOT_APPROVED);
+      }
+
       if (!isSuper_Admin) {
         throw new Error(AuthConstant.NOT_SUPER_ADMIN);
       }
