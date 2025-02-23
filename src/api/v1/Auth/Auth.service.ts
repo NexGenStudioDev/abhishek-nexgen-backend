@@ -18,8 +18,6 @@ export let Auth_Service = {
     role: string;
   }) => {
     try {
-      console.log('hash password service', hashPassword);
-
       const { error } = createAuth_Validator.validate({
         name,
         email,
@@ -73,12 +71,6 @@ export let Auth_Service = {
 
       if (!Auth_User) {
         throw new Error(AuthConstant.FAIL_TO_FIND_USER);
-      }
-
-      const isSuperAdmin = AuthDal.Check_Super_Admin(email);
-
-      if (!isSuperAdmin) {
-        throw new Error(AuthConstant.NOT_SUPER_ADMIN);
       }
 
       const isMatch = await Auth_User.comparePassword(

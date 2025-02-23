@@ -14,8 +14,6 @@ class Auth_Dal {
   };
 
   public Encrept_Email = async (email: string) => {
-    console.log('email', email);
-
     var token = jwt.sign({ email: email }, String(env_constant.JWT_SECRET), {
       expiresIn: '1h',
     });
@@ -25,19 +23,6 @@ class Auth_Dal {
     }
     console.log('token', token);
     return token;
-  };
-
-  public Check_Super_Admin = async (email: string) => {
-    try {
-      let find_User = await AuthModel.findOne({ email: email });
-
-      if (find_User && find_User.role === 'Super Admin') {
-        return true;
-      }
-      return false;
-    } catch (error: any) {
-      throw new Error(AuthConstant.FAIL_TO_FIND_USER);
-    }
   };
 
   public User_Data = async (user: object, token: string) => {
@@ -71,12 +56,9 @@ class Auth_Dal {
 
   public isApproved = async (email: string) => {
     try {
-      let find_User = await AuthModel.findOne({
-        email: email,
-        isApproved: true,
-      });
+      let find_User = await this.FIND_byEmail(email);
 
-      if (find_User) {
+      if (find_User?.approved) {
         return true;
       }
       return false;
