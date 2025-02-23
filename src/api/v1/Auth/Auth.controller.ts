@@ -21,13 +21,16 @@ class AuthController {
     try {
       const { name, email, Pasword } = req.body;
 
-      let AuthInstance = new AuthModel();
 
       let Find_User = await AuthDal.FIND_byEmail(email);
 
       if (Find_User) {
         throw new Error('User already exists');
       }
+
+
+      let AuthInstance = new AuthModel();
+
 
       let hashPassword = await AuthInstance.hashPassword(Pasword);
 
