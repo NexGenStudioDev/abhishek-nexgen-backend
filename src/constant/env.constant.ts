@@ -22,5 +22,4 @@ const env_constant: EnvConstants = {
   bcryptSalt: process.env.bcryptSalt,
 };
 
-console.log(env_constant);
 export default env_constant;

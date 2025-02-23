@@ -21,7 +21,7 @@ class Auth_Dal {
     if (!token) {
       throw new Error(AuthConstant.FAIL_TO_ENCREPT_EMAIL);
     }
-    console.log('token', token);
+
     return token;
   };
 

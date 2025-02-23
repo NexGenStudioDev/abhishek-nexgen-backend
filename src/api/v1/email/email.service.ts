@@ -28,9 +28,7 @@ class Mail_Service {
         text: message,
       });
 
-      console.log('Message sent: %s', send_Mail);
-
-     return send_Mail;
+      return send_Mail;
     } catch (error: any) {
       throw Error(error.message || Mail_Constant.MAIL_SENT_FAILED);
     }
