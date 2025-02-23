@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:16
+FROM node:18.15.0
 
 # Set the working directory in the container
 WORKDIR /backend
@@ -17,8 +17,10 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run the application
-CMD ["npm", "run" ,"start"]
+CMD ["npm", "run", "start"]
 
+# To build the image, run the following command
+# docker build -t <Container Name> .
 
 # run the following command to build the image
 # docker build -t <Container Name >  .

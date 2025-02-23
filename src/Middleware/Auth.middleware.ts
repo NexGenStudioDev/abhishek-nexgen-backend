@@ -10,7 +10,7 @@ class Auth_MiddleWate {
     next: NextFunction,
   ) {
     try {
-      const token = req.cookies.token;
+      const token = req.cookies.token || req.headers.authorization;
 
       if (!token) {
         throw new Error('Token is required');
@@ -18,16 +18,10 @@ class Auth_MiddleWate {
 
       const verify = await AuthDal.Verify_Token(token);
 
-      const isSuper_Admin = await AuthDal.Check_Super_Admin(verify.email);
-
       const isApproved = await AuthDal.isApproved(verify.email);
 
       if (!isApproved) {
         throw new Error(AuthConstant.NOT_APPROVED);
-      }
-
-      if (!isSuper_Admin) {
-        throw new Error(AuthConstant.NOT_SUPER_ADMIN);
       }
 
       next();

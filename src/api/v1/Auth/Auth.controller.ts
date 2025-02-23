@@ -7,8 +7,17 @@ import StatusConstant from '../../../constant/Status.constant';
 import AuthDal from './Auth.dal';
 import AuthConstant from './Auth.constant';
 
-export const AuthController = {
-  signUp: async (req: Request, res: Response): Promise<void> => {
+class AuthController {
+  private setTokenCookies(res: Response, token: string) {
+    res.set('authorization', token);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+  }
+
+  public signUp = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, email, Pasword } = req.body;
 
@@ -32,6 +41,9 @@ export const AuthController = {
         role: 'Admin',
       });
 
+      const token = await AuthDal.Encrept_Email(email);
+      this.setTokenCookies(res, token);
+
       SendResponse.success(
         res,
         StatusConstant.CREATED,
@@ -41,9 +53,9 @@ export const AuthController = {
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
-  },
+  };
 
-  login: async (req: Request, res: Response): Promise<void> => {
+  public login = async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, password } = req.body;
 
@@ -51,7 +63,7 @@ export const AuthController = {
 
       const token = await AuthDal.Encrept_Email(email);
 
-      res.cookie('token', token);
+      this.setTokenCookies(res, token);
 
       let data = await AuthDal.User_Data(user, token);
 
@@ -64,13 +76,16 @@ export const AuthController = {
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
-  },
+  };
 
-  logout: async (req: Request, res: Response): Promise<void> => {
+  public logout = async (req: Request, res: Response): Promise<void> => {
     try {
       res.clearCookie('token');
+      SendResponse.success(res, StatusConstant.OK, AuthConstant.LOGIN_SUCCESS);
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
-  },
-};
+  };
+}
+
+export default new AuthController();

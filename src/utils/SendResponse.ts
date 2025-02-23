@@ -5,7 +5,7 @@ class SendResponse {
     res: Response,
     statusCode: number,
     message: string,
-    data: unknown,
+    data?: unknown,
   ) {
     return res.status(statusCode).json({
       message,
