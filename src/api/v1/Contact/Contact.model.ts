@@ -29,7 +29,7 @@ let Contact_Schema = new Schema<Contact_Type>({
     required: [true, 'Phone is required'],
   },
   message: {
-    type: String, 
+    type: String,
     required: [true, 'Message is required'],
   },
 });

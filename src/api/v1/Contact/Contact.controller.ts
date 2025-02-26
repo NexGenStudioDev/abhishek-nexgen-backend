@@ -12,14 +12,13 @@ class Contact_Controller {
       const { name, email, phone, message } = req.body;
       const token = req.cookies.token || req.headers.authorization;
 
-
       if (!token) {
         throw new Error('Token is required');
       }
 
       let decoded = await AuthDal.Verify_Token(token);
 
-       let user = await  AuthDal.FIND_byEmail(decoded.email);
+      let user = await AuthDal.FIND_byEmail(decoded.email);
       let userId = String(user._id);
 
       let Created_Contact = await ContactService.create({
@@ -43,9 +42,7 @@ class Contact_Controller {
 
   public find = async (req: Request, res: Response) => {
     try {
-
       const token = req.cookies.token || req.headers.authorization;
-
 
       if (!token) {
         throw new Error('Token is required');
@@ -53,10 +50,9 @@ class Contact_Controller {
 
       let decoded = await AuthDal.Verify_Token(token);
 
-      let user = await  AuthDal.FIND_byEmail(decoded.email);
+      let user = await AuthDal.FIND_byEmail(decoded.email);
       let userId = String(user._id);
 
-      
       let Contact = await ContactService.find_Contact_Data(userId);
       SendResponse.success(
         res,
@@ -67,7 +63,7 @@ class Contact_Controller {
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
-  }
+  };
 }
 
 export default new Contact_Controller();

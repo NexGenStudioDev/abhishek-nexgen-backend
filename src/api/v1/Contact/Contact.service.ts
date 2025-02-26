@@ -49,10 +49,8 @@ class Contact_Service {
 
   public find_Contact_Data = async (userId: String) => {
     try {
+      const Contact = await ContactModel.find({ userId });
 
-      const Contact = await ContactModel.find({userId});
-
-   
       if (!Contact) {
         throw new Error(ContactConstant.FAIL_TO_FIND_CONTACT);
       }
@@ -61,7 +59,7 @@ class Contact_Service {
     } catch (error: any) {
       throw new Error(error.message || 'An unexpected error occurred');
     }
-  }
+  };
 }
 
 export default new Contact_Service();
