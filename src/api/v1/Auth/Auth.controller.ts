@@ -19,20 +19,19 @@ class AuthController {
 
   public signUp = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, email, Pasword } = req.body;
+      const { name, email, Password } = req.body;
 
-
-      let Find_User = await AuthDal.FIND_byEmail(email);
+      console.log(name, email, Password);
+      let Find_User = await AuthModel.findOne({ email: email });
+      console.log(Find_User);
 
       if (Find_User) {
         throw new Error('User already exists');
       }
 
-
       let AuthInstance = new AuthModel();
 
-
-      let hashPassword = await AuthInstance.hashPassword(Pasword);
+      let hashPassword = await AuthInstance.hashPassword(Password);
 
       const user = await Auth_Service.signUp({
         name: name,
@@ -51,6 +50,7 @@ class AuthController {
         user,
       );
     } catch (error: any) {
+      console.log(error);
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
   };
