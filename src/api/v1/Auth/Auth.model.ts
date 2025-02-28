@@ -1,22 +1,13 @@
 import bcrypt from 'bcryptjs';
 import AuthConstant from './Auth.constant';
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
+import { IAuth } from './Auth.type';
 
-interface IAuth extends Document {
-  name: string;
-  email: string;
-  password: string;
-  approved: boolean;
-  Technology_tools: Array<{
-    name: string;
-    description: string;
-    image: string;
-    link: string;
-  }>;
-  role: string;
-  hashPassword(password: string): Promise<string>;
-  comparePassword(hashPassword: string, password: string): Promise<boolean>;
-}
+// type , interface => Stracture
+// type TTechnology = {
+//  Object_Id: string,
+// }
 
 const AuthSchema = new Schema<IAuth>({
   name: {
@@ -39,25 +30,8 @@ const AuthSchema = new Schema<IAuth>({
 
   Technology_tools: [
     {
-      name: {
-        type: String,
-        required: [true, 'Name is required'],
-      },
-
-      description: {
-        type: String,
-        required: [true, 'Description is required'],
-      },
-
-      image: {
-        type: String,
-        required: [true, 'Image is required'],
-      },
-
-      link: {
-        type: String,
-        required: [true, 'Link is required'],
-      },
+      type: Types.ObjectId,
+      ref: 'Technology',
     },
   ],
 

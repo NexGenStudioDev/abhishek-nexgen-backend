@@ -29,4 +29,10 @@ router.delete(
   technologyController.deleteTechnology,
 );
 
+router.post(
+  '/v1/choose/technologies',
+  AuthMiddleware.Verify_Super_Admin,
+  technologyController.chooseTechnology,
+);
+
 export { router as TechnologyRoutes };

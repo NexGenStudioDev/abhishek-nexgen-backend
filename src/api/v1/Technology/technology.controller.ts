@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
+import mongoose, { ObjectId } from 'mongoose';
 import technologyService from './technology.service';
 import { validateTechnology } from './technology.validator';
 import SendResponse from '../../../utils/SendResponse';
 import technologyConstant from './technology.constant';
 import technologyDal from './technology.dal';
+import AuthDal from '../Auth/Auth.dal';
+import StatusConstant from '../../../constant/Status.constant';
 
 class technology_Controller {
   public async createTechnology(req: Request, res: Response): Promise<void> {
@@ -114,6 +117,33 @@ class technology_Controller {
       );
     } catch (err) {
       SendResponse.error(res, 500, (err as Error).message);
+    }
+  }
+
+  public async chooseTechnology(req: Request, res: Response): Promise<void> {
+    try {
+      let { technologies } = req.body;
+
+      const token = req.cookies.token || req.headers.authorization;
+
+      if (!token) {
+        throw new Error('Token is required');
+      }
+
+      let decoded = await AuthDal.Verify_Token(token);
+      let email = decoded.email;
+
+      let data = await technologyService.chooseTechnology(technologies, email);
+
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        technologyConstant.TECHNOLOGY_UPDATE,
+        data,
+      );
+    } catch (error: any) {
+      console.log(error);
+      SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
   }
 }
