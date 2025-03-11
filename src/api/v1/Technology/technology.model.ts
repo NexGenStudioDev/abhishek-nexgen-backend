@@ -1,15 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
+import { ITechnology } from './technology.type';
 
-interface ITechnology extends Document {
-  name: string;
-  description: string;
-  image: string;
-  link: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const TechnologySchema: Schema = new Schema(
+const TechnologySchema = new Schema<ITechnology>(
   {
     name: { type: String, required: [true, 'name is required'], unique: true },
     description: { type: String, required: [true, 'description is required'] },
