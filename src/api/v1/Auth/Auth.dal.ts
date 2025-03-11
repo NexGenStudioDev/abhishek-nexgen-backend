@@ -11,7 +11,6 @@ class Auth_Dal {
       }
 
       let find_User = await AuthModel.findOne({ email: email });
-      console.log('find by email', find_User);
 
       if (!find_User) {
         throw new Error(AuthConstant.FAIL_TO_FIND_USER);

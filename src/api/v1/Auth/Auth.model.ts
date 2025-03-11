@@ -1,13 +1,7 @@
 import bcrypt from 'bcryptjs';
 import AuthConstant from './Auth.constant';
-import { Schema, model, Document, ObjectId } from 'mongoose';
-import { Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { IAuth } from './Auth.type';
-
-// type , interface => Stracture
-// type TTechnology = {
-//  Object_Id: string,
-// }
 
 const AuthSchema = new Schema<IAuth>({
   name: {
@@ -30,7 +24,7 @@ const AuthSchema = new Schema<IAuth>({
 
   Technology_tools: [
     {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Technology',
     },
   ],

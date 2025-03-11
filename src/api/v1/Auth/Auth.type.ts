@@ -1,6 +1,6 @@
 import { ITechnology } from '../Technology/technology.type';
 
-export interface IAuth extends Document {
+export interface IAuth {
   name: string;
   email: string;
   password: string;

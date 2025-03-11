@@ -190,6 +190,22 @@ class TechnologyService {
       throw new Error(error.message);
     }
   };
+
+  public getTechnologyByUser = async (email: string) => {
+    try {
+      let user = await (
+        await AuthDal.FIND_byEmail(email)
+      ).populate('Technology_tools');
+
+      if (!user) {
+        throw new Error(technologyConstant.TECHNOLOGY_NOT_FOUND);
+      }
+
+      return user.Technology_tools;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 export default new TechnologyService();

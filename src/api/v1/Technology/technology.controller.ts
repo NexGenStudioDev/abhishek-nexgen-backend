@@ -146,6 +146,31 @@ class technology_Controller {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
   }
+
+  public async getTechnologyByUser(req: Request, res: Response): Promise<void> {
+    try {
+      const token = req.cookies.token || req.headers.authorization;
+
+      if (!token) {
+        throw new Error('Token is required');
+      }
+
+      let decoded = await AuthDal.Verify_Token(token);
+      let email = decoded.email;
+
+      let data = await technologyService.getTechnologyByUser(email);
+
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        technologyConstant.TECHNOLOGY_FETCHED,
+        data,
+      );
+    } catch (error: any) {
+      console.log(error);
+      SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
+    }
+  }
 }
 
 export default new technology_Controller();

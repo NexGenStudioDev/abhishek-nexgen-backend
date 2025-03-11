@@ -67,9 +67,7 @@ export let Auth_Service = {
         );
       }
 
-      const Auth_User = await AuthModel.findOne({ email }).populate(
-        'Technology_tools',
-      );
+      const Auth_User = await AuthModel.findOne({ email });
 
       if (!Auth_User) {
         throw new Error(AuthConstant.FAIL_TO_FIND_USER);
