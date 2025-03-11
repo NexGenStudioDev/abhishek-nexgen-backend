@@ -29,4 +29,16 @@ router.delete(
   technologyController.deleteTechnology,
 );
 
+router.get(
+  '/v1/find/technologiesByUser',
+  AuthMiddleware.Verify_Super_Admin,
+  technologyController.getTechnologyByUser,
+);
+
+router.post(
+  '/v1/choose/technologies',
+  AuthMiddleware.Verify_Super_Admin,
+  technologyController.chooseTechnology,
+);
+
 export { router as TechnologyRoutes };

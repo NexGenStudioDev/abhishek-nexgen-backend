@@ -1,12 +1,13 @@
 import Technology from './technology.model';
 
 class TechnologyDAL {
-  public async findTechnologyByName(name: string): Promise<boolean> {
+  public async findTechnologyByName(name: string) {
     const technology = await Technology.findOne({ name });
     if (!technology) {
       return false;
     }
-    return technology ? true : false;
+
+    return technology;
   }
 
   public async findAllTechnologies() {

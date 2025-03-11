@@ -6,6 +6,8 @@ import {
   validateTechnologyUpdate,
 } from './technology.validator';
 import technologyDal from './technology.dal';
+import { ObjectId, Types } from 'mongoose';
+import AuthDal from '../Auth/Auth.dal';
 
 class TechnologyService {
   public createTechnology = async ({
@@ -130,6 +132,78 @@ class TechnologyService {
       throw new Error(
         `Error deleting technology: ${(error as ErrorReport).message}`,
       );
+    }
+  };
+
+  public chooseTechnology = async (technologies: string, email: string) => {
+    try {
+      let Technology_ID_ARRAY = [];
+
+      if (typeof technologies !== 'string') {
+        throw new Error('Invalid Technology Type');
+      }
+
+      if (!technologies) {
+        throw new Error(technologyConstant.TECHNOLOGY_NOT_FOUND);
+      }
+
+      const technologiesArray = technologies.split(',');
+
+      let user = await (
+        await AuthDal.FIND_byEmail(email)
+      ).populate('Technology_tools');
+
+      let userTechnologies = [...user.Technology_tools];
+
+      for (let technologie of technologiesArray) {
+        const find_Technology =
+          await technologyDal.findTechnologyByName(technologie);
+
+        if (!find_Technology) {
+          throw new Error(
+            `${technologie} ${technologyConstant.TECHNOLOGY_NOT_FOUND}`,
+          );
+        }
+
+        const technologyExists = userTechnologies.find(
+          (e) => e.name === String(find_Technology.name),
+        );
+
+        if (technologyExists) {
+          throw new Error(
+            `${technologie} ${technologyConstant.TECHNOLOGY_ALREADY_EXISTS}`,
+          );
+        }
+
+        let obj = {};
+
+        let Object_Id: any = find_Technology._id;
+
+        user.Technology_tools.push(Object_Id);
+        Technology_ID_ARRAY.push(find_Technology._id);
+      }
+
+      await user.save();
+
+      return user;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  public getTechnologyByUser = async (email: string) => {
+    try {
+      let user = await (
+        await AuthDal.FIND_byEmail(email)
+      ).populate('Technology_tools');
+
+      if (!user) {
+        throw new Error(technologyConstant.TECHNOLOGY_NOT_FOUND);
+      }
+
+      return user.Technology_tools;
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   };
 }
