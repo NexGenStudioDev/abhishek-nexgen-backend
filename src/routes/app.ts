@@ -7,6 +7,7 @@ import { EmailRouter } from '../api/v1/email/email.routes';
 import { AuthRoutes } from '../api/v1/Auth/Auth.routes';
 import { TechnologyRoutes } from '../api/v1/Technology/technology.routes';
 import { ContactRouter } from '../api/v1/Contact/Contact.routes';
+import { ProjectRouter } from '../api/v1/Project/Project.routes';
 
 app.use(
   cors({
@@ -26,6 +27,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.use('/api', AuthRoutes, TechnologyRoutes, EmailRouter, ContactRouter);
+app.use(
+  '/api',
+  AuthRoutes,
+  TechnologyRoutes,
+  EmailRouter,
+  ContactRouter,
+  ProjectRouter,
+);
 
 export default app;

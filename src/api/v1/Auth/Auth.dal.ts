@@ -27,7 +27,7 @@ class Auth_Dal {
         throw new Error(AuthConstant.EMAIL_REQUIRED);
       }
       var token = jwt.sign({ email: email }, String(env_constant.JWT_SECRET), {
-        expiresIn: '1h',
+        expiresIn: '30d',
       });
 
       if (!token) {
