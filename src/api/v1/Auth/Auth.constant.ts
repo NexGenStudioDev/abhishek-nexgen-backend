@@ -1,6 +1,7 @@
 type AuthConstants = {
   CREATED: string;
   CREATED_FAILED: string;
+  LOGIN_FAILED: string;
   FETCHED: string;
   FETCH_FAILED: string;
   FAIL_TO_DECRYPT_TOKEN: string;
@@ -21,6 +22,7 @@ const Auth_Constant: AuthConstants = {
   CREATED: 'User created successfully Wait for approval',
   CREATED_FAILED: 'User creation failed',
   LOGIN_SUCCESS: 'Login Success',
+  LOGIN_FAILED: 'Login failed',
   FAIL_TO_DECRYPT_TOKEN: 'Failed to decrypt token',
   INVALID_TOKEN: 'Invalid Token',
   NOT_APPROVED: 'User not approved',
