@@ -2,10 +2,6 @@ import { model, Schema, Types } from 'mongoose';
 import { Project_Type } from './Project.type';
 
 let Project_Schema = new Schema<Project_Type>({
-  _id: {
-    type: Number,
-    required: [true, 'Id is required'],
-  },
   User_id: {
     type: Types.ObjectId,
     ref: 'Auth',
