@@ -4,6 +4,7 @@ enum Project_Constant {
   UPDATE = 'Project updated successfully',
   UPDATE_FAILED = 'Project update failed',
   DELETE = 'Project deleted successfully',
+  PROJECT_ID_REQUIRED = 'Project id required',
   DELETE_FAILED = 'Project delete failed',
   FIND_PROJECT = 'Project fetched successfully',
   FIND_FAILED = 'Project fetch failed',

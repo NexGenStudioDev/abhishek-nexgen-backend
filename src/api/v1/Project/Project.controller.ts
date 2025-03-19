@@ -32,7 +32,63 @@ class Project_Controller {
         User_id,
       });
 
-        SendResponse.success(res, StatusConstant.CREATED , ProjectConstant.CREATED  ,  CreateProject);
+      SendResponse.success(
+        res,
+        StatusConstant.CREATED,
+        ProjectConstant.CREATED,
+        CreateProject,
+      );
+    } catch (error: any) {
+      SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
+    }
+  };
+
+  public Find = async (req: Request, res: Response) => {
+    try {
+      let token = req.cookies.token || req.headers.authorization;
+      if (!token) {
+        throw new Error(AuthConstant.INVALID_TOKEN);
+      }
+
+      let Decord_Token = await AuthDal.Verify_Token(token);
+      let user = await AuthDal.FIND_byEmail(Decord_Token.email);
+      const User_id = user._id;
+
+      let FindProject = await ProjectService.FindProject(User_id.toString());
+
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        ProjectConstant.FIND_PROJECT,
+        FindProject,
+      );
+    } catch (error: any) {
+      SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
+    }
+  };
+
+  public Delete = async (req: Request, res: Response) => {
+    try {
+      let token = req.cookies.token || req.headers.authorization;
+      if (!token) {
+        throw new Error(AuthConstant.INVALID_TOKEN);
+      }
+
+      let PROJECT_id = req.query.Project_id;
+      if (!PROJECT_id) {
+        throw new Error(ProjectConstant.PROJECT_ID_REQUIRED);
+      }
+
+      let DeletedProject = await ProjectService.DeleteProject(
+        PROJECT_id.toString(),
+      );
+
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        ProjectConstant.DELETE,
+        DeletedProject,
+      );
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }
