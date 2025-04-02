@@ -5,6 +5,7 @@ export interface IAuth {
   email: string;
   password: string;
   approved: boolean;
+  refreshToken?: string;
   Technology_tools: ITechnology[];
   role: string;
   hashPassword(password: string): Promise<string>;

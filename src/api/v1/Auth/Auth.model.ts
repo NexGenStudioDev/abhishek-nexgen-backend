@@ -40,6 +40,10 @@ const AuthSchema = new Schema<IAuth>({
     default: false,
     required: true,
   },
+
+  refreshToken: {
+    type: String,
+  },
 });
 
 AuthSchema.methods.hashPassword = async function (password: string) {

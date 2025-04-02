@@ -89,6 +89,10 @@ class Auth_Dal {
       throw new Error(error.message || AuthConstant.NOT_APPROVED);
     }
   };
+
+  public getAuthByRefreshToken = async (refreshToken: string) => {
+    return AuthModel.findOne({ refreshToken }).select('refreshToken');
+  };
 }
 
 export default new Auth_Dal();

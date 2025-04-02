@@ -49,3 +49,20 @@ export const loginAuth_Validator = Joi.object({
     'any.required': 'Password is required',
   }),
 });
+
+export const jwtAccessTokenSchema = Joi.object({
+  userId: Joi.string().required().messages({
+    'string.base': 'User ID must be a string',
+    'string.empty': 'User ID is required',
+    'any.required': 'User ID is required',
+  }),
+
+});
+
+export const jwtRefreshTokenSchema = Joi.object({
+  userId: Joi.string().required().messages({
+    'string.base': 'User ID must be a string',
+    'string.empty': 'User ID is required',
+    'any.required': 'User ID is required',
+  }),
+});

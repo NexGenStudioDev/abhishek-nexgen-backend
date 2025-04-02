@@ -3,7 +3,7 @@ import { createAuth_Validator, loginAuth_Validator } from './Auth.validator';
 import AuthConstant from './Auth.constant';
 import AuthModel from './Auth.model';
 import AuthDal from './Auth.dal';
-import { verify } from 'crypto';
+
 
 export let Auth_Service = {
   signUp: async ({

@@ -6,6 +6,9 @@ import SendResponse from '../../../utils/SendResponse';
 import StatusConstant from '../../../constant/Status.constant';
 import AuthDal from './Auth.dal';
 import AuthConstant from './Auth.constant';
+import tokenService from '../token/token.service';
+import { jwtAccessTokenSchema } from './Auth.validator';
+import JwtUtils from '../../../utils/Jwt.utils';
 
 class AuthController {
   private setTokenCookies(res: Response, token: string) {
@@ -21,9 +24,8 @@ class AuthController {
     try {
       const { name, email, Password } = req.body;
 
-      console.log(name, email, Password);
       let Find_User = await AuthModel.findOne({ email: email });
-      console.log(Find_User);
+      
 
       if (Find_User) {
         throw new Error('User already exists');
@@ -40,15 +42,38 @@ class AuthController {
         role: 'Admin',
       });
 
-      const token = await AuthDal.Encrept_Email(email);
-      this.setTokenCookies(res, token);
+      console.log('user', user);
 
-      SendResponse.success(
-        res,
-        StatusConstant.CREATED,
-        'User created successfully',
-        user,
+      let AccessToken = await JwtUtils.generateAccessToken({
+        userId: String(user._id),
+      });
+
+      
+      let RefreshToken = await JwtUtils.generateRefreshToken({
+        userId: String(user._id),
+      });
+
+      let createTokenAndRefreshToken_Options = {
+        userId: user._id,
+        accessToken: AccessToken, // The JWT access token
+        refreshToken: RefreshToken, // The JWT refresh token
+      };
+
+      console.log(
+        'createTokenAndRefreshToken_Options',
+        createTokenAndRefreshToken_Options,
       );
+
+      // // const refreshToken = await tokenService.createTokenAndRefreshToken(createTokenAndRefreshToken_Options)
+      // const token = await AuthDal.Encrept_Email(email);
+      // this.setTokenCookies(res, token);
+
+      // SendResponse.success(
+      //   res,
+      //   StatusConstant.CREATED,
+      //   'User created successfully',
+      //   user,
+      // );
     } catch (error: any) {
       console.log(error);
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
