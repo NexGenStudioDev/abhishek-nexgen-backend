@@ -2,23 +2,24 @@ import { Request, Response, NextFunction } from 'express';
 import AuthDal from '../api/v1/Auth/Auth.dal';
 import SendResponse from '../utils/SendResponse';
 import AuthConstant from '../api/v1/Auth/Auth.constant';
+import JwtUtils from '../utils/Jwt.utils';
 
-class Auth_MiddleWate {
+class Auth_MiddleWare {
   public async Verify_Super_Admin(
     req: Request,
     res: Response,
     next: NextFunction,
   ) {
     try {
-      const token = req.cookies.token || req.headers.authorization;
+      const token = req.cookies['refresh-token'] || req.headers.authorization;
 
       if (!token) {
         throw new Error('Token is required');
       }
 
-      const verify = await AuthDal.Verify_Token(token);
+      const verify = await JwtUtils.verifyJWT_TOKEN(token, 'access');
 
-      const isApproved = await AuthDal.isApproved(verify.email);
+      const isApproved = await AuthDal.isApproved(verify.userId);
 
       if (!isApproved) {
         throw new Error(AuthConstant.NOT_APPROVED);
@@ -35,4 +36,4 @@ class Auth_MiddleWate {
   }
 }
 
-export default new Auth_MiddleWate();
+export default new Auth_MiddleWare();

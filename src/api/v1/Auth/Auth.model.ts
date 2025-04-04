@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import AuthConstant from './Auth.constant';
 import { Schema, model } from 'mongoose';
 import { IAuth } from './Auth.type';
+import JwtUtils from '../../../utils/Jwt.utils';
 
 const AuthSchema = new Schema<IAuth>({
   name: {
@@ -31,7 +32,7 @@ const AuthSchema = new Schema<IAuth>({
 
   role: {
     type: String,
-    default: 'Super Admin',
+    default: 'Admin',
     required: [true, 'Role is required'],
   },
 
@@ -39,6 +40,19 @@ const AuthSchema = new Schema<IAuth>({
     type: Boolean,
     default: false,
     required: true,
+  },
+
+  refreshToken: {
+    type: String,
+    default: '',
+  },
+});
+
+// Exclude refreshToken when converting to JSON
+AuthSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.refreshToken; // Remove refreshToken field
+    return ret;
   },
 });
 

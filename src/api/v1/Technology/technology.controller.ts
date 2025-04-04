@@ -7,6 +7,8 @@ import technologyConstant from './technology.constant';
 import technologyDal from './technology.dal';
 import AuthDal from '../Auth/Auth.dal';
 import StatusConstant from '../../../constant/Status.constant';
+import JwtUtils from '../../../utils/Jwt.utils';
+import AuthConstant from '../Auth/Auth.constant';
 
 class technology_Controller {
   public async createTechnology(req: Request, res: Response): Promise<void> {
@@ -124,14 +126,16 @@ class technology_Controller {
     try {
       let { technologies } = req.body;
 
-      const token = req.cookies.token || req.headers.authorization;
+      const token = req.cookies['refresh-token'] || req.headers.authorization;
 
       if (!token) {
-        throw new Error('Token is required');
+        throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      let decoded = await AuthDal.Verify_Token(token);
-      let email = decoded.email;
+      let Decode_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
+
+      let user = await AuthDal.FIND_BY_USER_ID(Decode_Token.userId);
+      const email = String(user.email);
 
       let data = await technologyService.chooseTechnology(technologies, email);
 
@@ -149,14 +153,17 @@ class technology_Controller {
 
   public async getTechnologyByUser(req: Request, res: Response): Promise<void> {
     try {
-      const token = req.cookies.token || req.headers.authorization;
+      const token = req.cookies['refresh-token'] || req.headers.authorization;
 
       if (!token) {
-        throw new Error('Token is required');
+        throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      let decoded = await AuthDal.Verify_Token(token);
-      let email = decoded.email;
+      let Decode_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
+
+      let user = await AuthDal.FIND_BY_USER_ID(Decode_Token.userId);
+
+      const email = String(user.email);
 
       let data = await technologyService.getTechnologyByUser(email);
 
