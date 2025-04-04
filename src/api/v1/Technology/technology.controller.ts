@@ -8,6 +8,7 @@ import technologyDal from './technology.dal';
 import AuthDal from '../Auth/Auth.dal';
 import StatusConstant from '../../../constant/Status.constant';
 import JwtUtils from '../../../utils/Jwt.utils';
+import AuthConstant from '../Auth/Auth.constant';
 
 class technology_Controller {
   public async createTechnology(req: Request, res: Response): Promise<void> {
@@ -125,26 +126,25 @@ class technology_Controller {
     try {
       let { technologies } = req.body;
 
-      const token = req.cookies.token || req.headers.authorization;
+      const token = req.cookies['refresh-token'] || req.headers.authorization;
 
       if (!token) {
-        throw new Error('Token is required');
+        throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      let decoded = await JwtUtils.verifyJWT_TOKEN(token, 'refresh');
+      let Decode_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
 
-      console.log('decoded', decoded);
+      let user = await AuthDal.FIND_BY_USER_ID(Decode_Token.userId);
+      const email = String(user.email);
 
-      // let email = decoded.sub;
+      let data = await technologyService.chooseTechnology(technologies, email);
 
-      // let data = await technologyService.chooseTechnology(technologies, email);
-
-      // SendResponse.success(
-      //   res,
-      //   StatusConstant.OK,
-      //   technologyConstant.TECHNOLOGY_UPDATE,
-      //   data,
-      // );
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        technologyConstant.TECHNOLOGY_UPDATE,
+        data,
+      );
     } catch (error: any) {
       console.log(error);
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
@@ -153,26 +153,26 @@ class technology_Controller {
 
   public async getTechnologyByUser(req: Request, res: Response): Promise<void> {
     try {
-      const token = req.cookies.token || req.headers.authorization;
+      const token = req.cookies['refresh-token'] || req.headers.authorization;
 
       if (!token) {
-        throw new Error('Token is required');
+        throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      let decoded = await JwtUtils.verifyJWT_TOKEN(token, 'access');
+      let Decode_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
 
-      console.log('decoded', decoded);
+      let user = await AuthDal.FIND_BY_USER_ID(Decode_Token.userId);
 
-      // let email = decoded.email;
+      const email = String(user.email);
 
-      // let data = await technologyService.getTechnologyByUser(email);
+      let data = await technologyService.getTechnologyByUser(email);
 
-      // SendResponse.success(
-      //   res,
-      //   StatusConstant.OK,
-      //   technologyConstant.TECHNOLOGY_FETCHED,
-      //   data,
-      // );
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        technologyConstant.TECHNOLOGY_FETCHED,
+        data,
+      );
     } catch (error: any) {
       console.log(error);
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);

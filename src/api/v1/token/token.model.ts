@@ -43,15 +43,12 @@ const tokenSchema = new Schema<IToken>(
 
 tokenSchema.pre('save', async function (next) {
   try {
-
-   
-    console.log('this' , this)
+    console.log('this', this);
 
     await AuthDal.updateRefreshToken({
       refreshToken: this.refreshToken,
       userId: String(this.userId),
     });
-
 
     next();
   } catch (error: any) {

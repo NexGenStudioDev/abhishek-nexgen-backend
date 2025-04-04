@@ -11,6 +11,7 @@ router.get(
 );
 router.get(
   '/v1/find/single/technologies/:id',
+  AuthMiddleware.Verify_Super_Admin,
   technologyController.getTechnologyById,
 );
 router.post(

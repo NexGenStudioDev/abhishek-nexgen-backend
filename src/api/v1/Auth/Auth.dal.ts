@@ -30,12 +30,29 @@ class Auth_Dal {
     return data;
   };
 
-  public isApproved = async (email: string) => {
+  public FIND_BY_USER_ID = async (userId: string) => {
     try {
-      if (!email) {
+      if (!userId) {
+        throw new Error(AuthConstant.USER_ID_REQUIRED);
+      }
+
+      let find_User = await AuthModel.findById(userId);
+
+      if (!find_User) {
+        throw new Error(AuthConstant.FAIL_TO_FIND_USER);
+      }
+      return find_User;
+    } catch (error: any) {
+      throw new Error(error.message || AuthConstant.FAIL_TO_FIND_USER);
+    }
+  };
+
+  public isApproved = async (userId: string) => {
+    try {
+      if (!userId) {
         throw new Error(AuthConstant.EMAIL_REQUIRED);
       }
-      let find_User = await this.FIND_byEmail(email);
+      let find_User = await this.FIND_BY_USER_ID(userId);
 
       if (find_User?.approved) {
         return true;

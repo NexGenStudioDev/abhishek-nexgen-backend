@@ -7,6 +7,7 @@ const Auth_Constant: AuthConstants = {
   LOGIN_FAILED: 'Login failed',
   FAIL_TO_UPDATE_REFRESH_TOKEN: 'Failed to update refresh token',
   FAIL_TO_DECRYPT_TOKEN: 'Failed to decrypt token',
+  USER_ID_REQUIRED: 'User ID is required',
   INVALID_TOKEN: 'Invalid Token',
   TOKEN_EXPIRED: 'Token Expired',
   NOT_APPROVED: 'User not approved',

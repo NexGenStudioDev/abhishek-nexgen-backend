@@ -63,24 +63,16 @@ class AuthController {
       let AccessToken = await genAccessAndRefreshToken.AccessToken;
       let RefreshToken = await genAccessAndRefreshToken.RefreshToken;
 
-
-   
-
       let CreateToken_Option = {
         userId: String(user._id),
         refreshToken: RefreshToken,
         accessToken: AccessToken,
       } as IToken;
 
-      const token = await tokenService.createTokenAndRefreshToken(CreateToken_Option);
+      const token =
+        await tokenService.createTokenAndRefreshToken(CreateToken_Option);
 
-
-
-      this.setTokenCookies(
-        res,
-        String(AccessToken),
-        String(RefreshToken),
-      );
+      this.setTokenCookies(res, String(AccessToken), String(RefreshToken));
 
       SendResponse.success(
         res,
@@ -114,8 +106,6 @@ class AuthController {
         String(token?.accessToken),
         'access',
       );
-
-   
 
       this.setTokenCookies(
         res,

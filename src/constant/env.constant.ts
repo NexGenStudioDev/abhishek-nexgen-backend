@@ -22,6 +22,4 @@ const env_constant: EnvConstants = {
   YOUR_EMAIL_PASSWORD: process.env.YOUR_EMAIL_PASSWORD,
 };
 
-
-
 export default env_constant;

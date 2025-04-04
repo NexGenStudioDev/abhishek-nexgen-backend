@@ -6,21 +6,23 @@ import ContactConstant from './Contact.constant';
 import exp from 'constants';
 import AuthDal from '../Auth/Auth.dal';
 import JwtUtils from '../../../utils/Jwt.utils';
+import AuthConstant from '../Auth/Auth.constant';
 
 class Contact_Controller {
   public create = async (req: Request, res: Response) => {
     try {
       const { name, email, phone, message } = req.body;
-      const token = req.cookies.token || req.headers.authorization;
+
+      const token = req.cookies['refresh-token'] || req.headers.authorization;
 
       if (!token) {
-        throw new Error('Token is required');
+        throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      let decoded = await JwtUtils.verifyJWT_TOKEN(token, 'access');
+      let Decode_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
 
-      let user = await AuthDal.FIND_byEmail(decoded.email);
-      let userId = String(user._id);
+      let user = await AuthDal.FIND_BY_USER_ID(Decode_Token.userId);
+      const userId = String(user._id);
 
       let Created_Contact = await ContactService.create({
         name,
@@ -43,26 +45,24 @@ class Contact_Controller {
 
   public find = async (req: Request, res: Response) => {
     try {
-      const token = req.cookies.token || req.headers.authorization;
+      const token = req.cookies['refresh-token'] || req.headers.authorization;
 
       if (!token) {
-        throw new Error('Token is required');
+        throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      let decoded = await JwtUtils.verifyJWT_TOKEN(token, 'access');
+      let Decode_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
 
+      let user = await AuthDal.FIND_BY_USER_ID(Decode_Token.userId);
+      const userId = String(user._id);
 
-
-      // let user = await AuthDal.FIND_byEmail(decoded.email);
-      // let userId = String(user._id);
-
-      // let Contact = await ContactService.find_Contact_Data(userId);
-      // SendResponse.success(
-      //   res,
-      //   StatusConstant.OK,
-      //   ContactConstant.FETCHED,
-      //   Contact,
-      // );
+      let Contact = await ContactService.find_Contact_Data(userId);
+      SendResponse.success(
+        res,
+        StatusConstant.OK,
+        ContactConstant.FETCHED,
+        Contact,
+      );
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }

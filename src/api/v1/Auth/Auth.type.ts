@@ -29,6 +29,7 @@ export type AuthConstants = {
   INVALID_TOKEN: string;
   FAIL_TO_ENCREPT_EMAIL: string;
   EMAIL_REQUIRED: string;
+  USER_ID_REQUIRED: string;
   UPDATE: string;
   NOT_APPROVED: string;
   FAIL_TO_FIND_USER: string;
