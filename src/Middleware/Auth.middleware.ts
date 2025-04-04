@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import AuthDal from '../api/v1/Auth/Auth.dal';
 import SendResponse from '../utils/SendResponse';
 import AuthConstant from '../api/v1/Auth/Auth.constant';
+import JwtUtils from '../utils/Jwt.utils';
 
 class Auth_MiddleWate {
   public async Verify_Super_Admin(
@@ -16,7 +17,7 @@ class Auth_MiddleWate {
         throw new Error('Token is required');
       }
 
-      const verify = await AuthDal.Verify_Token(token);
+      const verify = await JwtUtils.verifyJWT_TOKEN(token, 'access');
 
       const isApproved = await AuthDal.isApproved(verify.email);
 

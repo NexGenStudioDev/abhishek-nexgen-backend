@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import env_constant from '../constant/env.constant';
 import jwtConstant from '../constant/jwt.constant';
 import {
@@ -10,21 +10,14 @@ import AuthDal from '../api/v1/Auth/Auth.dal';
 import { ObjectId } from 'mongoose';
 
 class Jwt_Utils {
-
-private PRIVATE_KEY = env_constant.PRIVATE_KEY;
-private PUBLIC_KEY = env_constant.PUBLIC_KEY;
-
-
+  private PRIVATE_KEY = env_constant.PRIVATE_KEY;
+  private PUBLIC_KEY = env_constant.PUBLIC_KEY;
 
   public generateAccessToken = async (payload: {
-    userId: ObjectId | string;
+    userId: string;
   }): Promise<string> => {
     try {
-      let { error } = jwtAccessTokenSchema.validate(payload, {
-        abortEarly: false,
-        allowUnknown: true,
-        stripUnknown: true,
-      });
+      const { error } = jwtAccessTokenSchema.validate(payload);
 
       if (error) {
         throw new Error(
@@ -34,7 +27,8 @@ private PUBLIC_KEY = env_constant.PUBLIC_KEY;
 
       const token = jwt.sign(payload, this.PRIVATE_KEY as string, {
         expiresIn: jwtConstant.Expire_time,
-        algorithm: jwtConstant.Algorithm,
+        algorithm: jwtConstant.Algorithm as jwt.Algorithm,
+
         audience: jwtConstant.AUDIENCE,
         issuer: jwtConstant.ISSUER,
       });
@@ -54,7 +48,7 @@ private PUBLIC_KEY = env_constant.PUBLIC_KEY;
     userId: ObjectId | string;
   }): Promise<string> => {
     try {
-      let { error } = jwtRefreshTokenSchema.validate(payload.userId);
+      const { error } = jwtRefreshTokenSchema.validate(payload);
 
       if (error) {
         throw new Error(
@@ -63,7 +57,8 @@ private PUBLIC_KEY = env_constant.PUBLIC_KEY;
       }
 
       const token = jwt.sign(payload, this.PRIVATE_KEY as string, {
-        expiresIn: '7d',
+        expiresIn: '60d',
+        algorithm: jwtConstant.Algorithm as jwt.Algorithm,
         audience: jwtConstant.AUDIENCE,
         issuer: jwtConstant.ISSUER,
       });
@@ -82,22 +77,19 @@ private PUBLIC_KEY = env_constant.PUBLIC_KEY;
   public verifyJWT_TOKEN = async (
     token: string,
     tokenType: 'access' | 'refresh' | 'action',
-    algorithm: string,
-    serviceName: string,
-    CURRENT_SERVICE: string,
-  ): Promise<any> => {
+  ): Promise<JwtPayload> => {
     try {
       const verifyOptions = {
-        algorithms: [algorithm] as jwt.Algorithm[],
-        audience: serviceName,
-        issuer: CURRENT_SERVICE,
+        algorithms: [jwtConstant.Algorithm] as jwt.Algorithm[],
+        audience: jwtConstant.AUDIENCE,
+        issuer: jwtConstant.ISSUER,
       };
 
       const decoded = jwt.verify(
         token,
-        env_constant.JWT_SECRET as string,
+        this.PUBLIC_KEY as string,
         verifyOptions,
-      );
+      ) as JwtPayload;
 
       if (tokenType === 'refresh') {
         const storedToken = await AuthDal.getAuthByRefreshToken(token);

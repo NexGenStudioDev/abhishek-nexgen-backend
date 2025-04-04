@@ -1,29 +1,11 @@
-type AuthConstants = {
-  CREATED: string;
-  CREATED_FAILED: string;
-  LOGIN_FAILED: string;
-  FETCHED: string;
-  FETCH_FAILED: string;
-  FAIL_TO_DECRYPT_TOKEN: string;
-  TOKEN_EXPIRED: string;
-  INVALID_TOKEN: string;
-  FAIL_TO_ENCREPT_EMAIL: string;
-  EMAIL_REQUIRED: string;
-  UPDATE: string;
-  NOT_APPROVED: string;
-  FAIL_TO_FIND_USER: string;
-  LOGIN_SUCCESS: string;
-  NOT_SUPER_ADMIN: string;
-  INCORECT_PASSWORD: string;
-  UPDATE_FAILED: string;
-  SALT_ROUNDS: number;
-};
+import { AuthConstants } from './Auth.type';
 
 const Auth_Constant: AuthConstants = {
   CREATED: 'User created successfully Wait for approval',
   CREATED_FAILED: 'User creation failed',
   LOGIN_SUCCESS: 'Login Success',
   LOGIN_FAILED: 'Login failed',
+  FAIL_TO_UPDATE_REFRESH_TOKEN: 'Failed to update refresh token',
   FAIL_TO_DECRYPT_TOKEN: 'Failed to decrypt token',
   INVALID_TOKEN: 'Invalid Token',
   TOKEN_EXPIRED: 'Token Expired',

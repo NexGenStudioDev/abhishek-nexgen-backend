@@ -6,6 +6,7 @@ import AuthDal from '../Auth/Auth.dal';
 import { Create_Project_Validator } from './Project.Validator';
 import ProjectService from './Project.Service';
 import ProjectConstant from './Project.constant';
+import JwtUtils from '../../../utils/Jwt.utils';
 
 class Project_Controller {
   public Create = async (req: Request, res: Response) => {
@@ -15,9 +16,10 @@ class Project_Controller {
         throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      console.log('Req.body', req.body);
 
-      let Decord_Token = await AuthDal.Verify_Token(token);
+
+      let Decord_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
+
       let user = await AuthDal.FIND_byEmail(Decord_Token.email);
       const User_id = user._id;
 
@@ -50,18 +52,19 @@ class Project_Controller {
         throw new Error(AuthConstant.INVALID_TOKEN);
       }
 
-      let Decord_Token = await AuthDal.Verify_Token(token);
-      let user = await AuthDal.FIND_byEmail(Decord_Token.email);
-      const User_id = user._id;
+      let Decord_Token = JwtUtils.verifyJWT_TOKEN(token, 'access');
 
-      let FindProject = await ProjectService.FindProject(User_id.toString());
+      // let user = await AuthDal.FIND_byEmail(Decord_Token.email);
+      // const User_id = user._id;
 
-      SendResponse.success(
-        res,
-        StatusConstant.OK,
-        ProjectConstant.FIND_PROJECT,
-        FindProject,
-      );
+      // let FindProject = await ProjectService.FindProject(User_id.toString());
+
+      // SendResponse.success(
+      //   res,
+      //   StatusConstant.OK,
+      //   ProjectConstant.FIND_PROJECT,
+      //   FindProject,
+      // );
     } catch (error: any) {
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
     }

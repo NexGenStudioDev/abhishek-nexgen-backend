@@ -4,10 +4,22 @@ import { IToken } from './token.type';
 import { CreateToken_Validator } from './token.validation';
 
 class Token_Service {
-  public createTokenAndRefreshToken(data: IToken): Promise<IToken> {
+  public createTokenAndRefreshToken(
+    CreateToken_Option: IToken,
+  ) {
     try {
-      CreateToken_Validator.validate(data);
-      let CREATE_USER_TOKEN = Token.create(data);
+
+      let { error } = CreateToken_Validator.validate(CreateToken_Option);
+
+      if (error) {
+        throw new Error(
+          `Validation error: ${error.details.map((x) => x.message).join(', ')}`,
+        );
+      }
+
+      
+
+      let CREATE_USER_TOKEN = Token.create(CreateToken_Option);
 
       if (!CREATE_USER_TOKEN) {
         throw new Error(tokenConstant.TOKEN_CREATED_FAILED);

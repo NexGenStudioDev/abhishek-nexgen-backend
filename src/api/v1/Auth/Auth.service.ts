@@ -3,17 +3,19 @@ import { createAuth_Validator, loginAuth_Validator } from './Auth.validator';
 import AuthConstant from './Auth.constant';
 import AuthModel from './Auth.model';
 import AuthDal from './Auth.dal';
-
+import JwtUtils from '../../../utils/Jwt.utils';
 
 export let Auth_Service = {
   signUp: async ({
     name,
     email,
     hashPassword,
+    refreshToken,
     role,
   }: {
     name: string;
     email: string;
+    refreshToken?: string;
     hashPassword: string;
     role: string;
   }) => {

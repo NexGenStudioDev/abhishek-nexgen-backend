@@ -7,6 +7,7 @@ import technologyConstant from './technology.constant';
 import technologyDal from './technology.dal';
 import AuthDal from '../Auth/Auth.dal';
 import StatusConstant from '../../../constant/Status.constant';
+import JwtUtils from '../../../utils/Jwt.utils';
 
 class technology_Controller {
   public async createTechnology(req: Request, res: Response): Promise<void> {
@@ -130,17 +131,20 @@ class technology_Controller {
         throw new Error('Token is required');
       }
 
-      let decoded = await AuthDal.Verify_Token(token);
-      let email = decoded.email;
+      let decoded = await JwtUtils.verifyJWT_TOKEN(token, 'refresh');
 
-      let data = await technologyService.chooseTechnology(technologies, email);
+      console.log('decoded', decoded);
 
-      SendResponse.success(
-        res,
-        StatusConstant.OK,
-        technologyConstant.TECHNOLOGY_UPDATE,
-        data,
-      );
+      // let email = decoded.sub;
+
+      // let data = await technologyService.chooseTechnology(technologies, email);
+
+      // SendResponse.success(
+      //   res,
+      //   StatusConstant.OK,
+      //   technologyConstant.TECHNOLOGY_UPDATE,
+      //   data,
+      // );
     } catch (error: any) {
       console.log(error);
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);
@@ -155,17 +159,20 @@ class technology_Controller {
         throw new Error('Token is required');
       }
 
-      let decoded = await AuthDal.Verify_Token(token);
-      let email = decoded.email;
+      let decoded = await JwtUtils.verifyJWT_TOKEN(token, 'access');
 
-      let data = await technologyService.getTechnologyByUser(email);
+      console.log('decoded', decoded);
 
-      SendResponse.success(
-        res,
-        StatusConstant.OK,
-        technologyConstant.TECHNOLOGY_FETCHED,
-        data,
-      );
+      // let email = decoded.email;
+
+      // let data = await technologyService.getTechnologyByUser(email);
+
+      // SendResponse.success(
+      //   res,
+      //   StatusConstant.OK,
+      //   technologyConstant.TECHNOLOGY_FETCHED,
+      //   data,
+      // );
     } catch (error: any) {
       console.log(error);
       SendResponse.error(res, StatusConstant.BAD_REQUEST, error.message);

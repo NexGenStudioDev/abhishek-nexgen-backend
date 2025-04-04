@@ -1,40 +1,29 @@
-import { exec } from "child_process";
-import { promisify } from "util";
-import path from "path";
+import crypto from "crypto";
 import fs from "fs";
+import path from "path";
 
-// Convert exec to return a promise
-const execPromise = promisify(exec);
-
-async function generateKeys() {
-  try {
-
-    const keysDir = path.basename('./keys');
-    const privateKeyPath = path.join(keysDir, "privatekey.pem");
-    const publicKeyPath = path.join(keysDir, "publickey.pem");
-
-
-    if (!fs.existsSync(keysDir)) {
-      fs.mkdirSync(keysDir, { recursive: true });
-    }
-
-
-    const privateKeyCommand = `openssl genrsa -out ${privateKeyPath} 2048`;
+const generateKeyPair = () => {
+  const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
+    modulusLength: 2048,
+    publicKeyEncoding: {
+      type: "spki",
+      format: "pem",
+    },
+    privateKeyEncoding: {
+      type: "pkcs8",
+      format: "pem",
+    },
+  });
 
 
-    await execPromise(privateKeyCommand);
-    console.log("Private key generated at:", privateKeyPath);
+  const keysDir = path.join(process.cwd(), "keys");
 
-
-    const publicKeyCommand = `openssl rsa -in ${privateKeyPath} -pubout -out ${publicKeyPath}`;
-
-
-    await execPromise(publicKeyCommand);
-
-  } catch (error) {
-    console.error("Error generating keys:", error);
+  if (!fs.existsSync(keysDir)) {
+    fs.mkdirSync(keysDir);
   }
-}
 
-// Generate the keys when the script is run
-generateKeys();
+  fs.writeFileSync(path.join(keysDir, "private.pem"), privateKey);
+  fs.writeFileSync(path.join(keysDir, "public.pem"), publicKey);
+};
+
+generateKeyPair();

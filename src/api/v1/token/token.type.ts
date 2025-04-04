@@ -7,4 +7,6 @@ export interface IToken extends Document {
   refreshToken: string; // The JWT refresh token
   createdAt?: Date; // The date when the token was created
   updatedAt?: Date; // The date when the token was last updated
+  isUsed: boolean; // Flag to indicate if the token has been used
+  requestAttempts?: number; // Number of attempts to use the token,
 }
