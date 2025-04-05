@@ -8,10 +8,12 @@ import { AuthRoutes } from '../api/v1/Auth/Auth.routes';
 import { TechnologyRoutes } from '../api/v1/Technology/technology.routes';
 import { ContactRouter } from '../api/v1/Contact/Contact.routes';
 import { ProjectRouter } from '../api/v1/Project/Project.routes';
+import { Token_Router } from '../api/v1/token/token.routes';
+import env_constant from '../constant/env.constant';
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: env_constant.FRONTEND_ORIGIN,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -34,6 +36,7 @@ app.use(
   EmailRouter,
   ContactRouter,
   ProjectRouter,
+  Token_Router,
 );
 
 export default app;

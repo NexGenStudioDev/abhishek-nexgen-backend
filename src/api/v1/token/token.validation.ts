@@ -18,3 +18,11 @@ export let CreateToken_Validator = Joi.object({
     'any.required': 'refreshToken is required',
   }),
 });
+
+export let RenewAccessToken_Validator = Joi.object({
+  refresh_token: Joi.string().required().messages({
+    'string.base': 'refresh_token must be a string',
+    'string.empty': 'refresh_token is required',
+    'any.required': 'refresh_token is required',
+  }),
+});

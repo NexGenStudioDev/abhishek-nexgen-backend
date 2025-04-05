@@ -13,6 +13,17 @@ class Token_Utils {
   async getToken(token: string): Promise<IToken | null> {
     return await Token.findOne({ token });
   }
+
+  async UpdateAccessTokenByRefreshToken(
+    refreshToken: string,
+    accessToken: string,
+  ) {
+    return await Token.findOneAndUpdate(
+      { refreshToken },
+      { accessToken },
+      { new: true },
+    );
+  }
 }
 
 export default new Token_Utils();
