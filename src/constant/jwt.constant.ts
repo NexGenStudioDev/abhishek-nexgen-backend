@@ -1,5 +1,5 @@
 enum Jwt_Constants {
-  Expire_time = '1h',
+  Expire_time = '30d',
   Algorithm = 'RS256',
   AUDIENCE = 'Portfolio_Service',
   ISSUER = 'Portfolio',
