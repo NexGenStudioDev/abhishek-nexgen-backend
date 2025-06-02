@@ -57,7 +57,7 @@ class Jwt_Utils {
       }
 
       const token = jwt.sign(payload, this.PRIVATE_KEY as string, {
-        expiresIn: '60d',
+        expiresIn: '2y',
         algorithm: jwtConstant.Algorithm as jwt.Algorithm,
         audience: jwtConstant.AUDIENCE,
         issuer: jwtConstant.ISSUER,
