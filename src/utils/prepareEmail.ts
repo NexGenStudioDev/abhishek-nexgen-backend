@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { execSync } from 'child_process';
 import juice from 'juice';
 
 export function renderEmail(component: React.ReactElement): string {
