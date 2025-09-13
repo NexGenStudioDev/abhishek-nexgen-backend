@@ -5,14 +5,12 @@ import { createContact_Validator } from './Contact.validator';
 class Contact_Service {
   public create = async ({
     name,
-    userId,
     email,
     phone,
     message,
   }: {
     name: string;
     email: string;
-    userId: string;
     phone: number;
     message: string;
   }) => {
@@ -32,7 +30,6 @@ class Contact_Service {
       const Contact_User = await ContactModel.create({
         name,
         email,
-        userId,
         phone,
         message,
       });

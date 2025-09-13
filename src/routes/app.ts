@@ -1,6 +1,6 @@
+import cors from 'cors';
 import express from 'express';
 const app = express();
-import cors from 'cors';
 
 import cookieParser from 'cookie-parser';
 import { EmailRouter } from '../api/v1/email/email.routes';
@@ -10,14 +10,13 @@ import { ContactRouter } from '../api/v1/Contact/Contact.routes';
 import { ProjectRouter } from '../api/v1/Project/Project.routes';
 import { Token_Router } from '../api/v1/token/token.routes';
 import env_constant from '../constant/env.constant';
+import { CallBack_Router } from '../api/v1/CallBack/CallBack.routes';
 
 app.use(
   cors({
     origin: env_constant.FRONTEND_ORIGIN,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Content-Type', 'Authorization'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
     maxAge: 3600,
@@ -37,6 +36,7 @@ app.use(
   ContactRouter,
   ProjectRouter,
   Token_Router,
+  CallBack_Router,
 );
 
 export default app;

@@ -26,16 +26,12 @@ class Token_Controller {
 
       let userId = VerifyRefreshToken.userId;
 
-
-      let GenerateAccessToken = await JwtUtils.generateAccessToken({userId});
-
-   
+      let GenerateAccessToken = await JwtUtils.generateAccessToken({ userId });
 
       let Updated_Access_Token = await tokenService.RenewAccessToken(
         refresh_token,
         GenerateAccessToken,
       );
-
 
       SendResponse.success(
         res,
@@ -43,7 +39,6 @@ class Token_Controller {
         tokenConstant.ACCESS_TOKEN_UPDATED,
         Updated_Access_Token,
       );
-
     } catch (error: any) {
       SendResponse.error(
         res,

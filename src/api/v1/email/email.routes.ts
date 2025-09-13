@@ -5,13 +5,13 @@ import AuthMiddleware from '../../../Middleware/Auth.middleware';
 
 router.post(
   '/SendMail',
-  AuthMiddleware.Verify_Super_Admin,
+  AuthMiddleware.verifyRole('admin'),
   Mail_Controller.sendMail,
 );
 
 router.post(
   '/forgot/password/mail',
-  AuthMiddleware.Verify_Super_Admin,
+  AuthMiddleware.verifyRole('admin'),
   Mail_Controller.forgotPassword,
 );
 

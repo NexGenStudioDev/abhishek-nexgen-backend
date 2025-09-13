@@ -5,18 +5,14 @@ const router = Router();
 
 router.post(
   '/v1/project/create',
-  AuthMiddleware.Verify_Super_Admin,
+  AuthMiddleware.verifyRole('admin'),
   ProjectController.Create,
 );
-router.get(
-  '/v1/project/find',
-  AuthMiddleware.Verify_Super_Admin,
-  ProjectController.Find,
-);
+router.get('/v1/project/find', ProjectController.Find);
 
 router.delete(
   '/v1/project/delete',
-  AuthMiddleware.Verify_Super_Admin,
+  AuthMiddleware.verifyRole('admin'),
   ProjectController.Delete,
 );
 

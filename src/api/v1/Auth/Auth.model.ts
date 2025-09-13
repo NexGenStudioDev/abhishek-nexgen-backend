@@ -49,12 +49,6 @@ const AuthSchema = new Schema<IAuth>({
 });
 
 // Exclude refreshToken when converting to JSON
-AuthSchema.set('toJSON', {
-  transform: (doc, ret) => {
-    delete ret.refreshToken; // Remove refreshToken field
-    return ret;
-  },
-});
 
 AuthSchema.methods.hashPassword = async function (password: string) {
   const salt = bcrypt.genSaltSync(AuthConstant.SALT_ROUNDS);

@@ -13,23 +13,11 @@ class Contact_Controller {
     try {
       const { name, email, phone, message } = req.body;
 
-      const token = req.cookies['refresh-token'] || req.headers.authorization;
-
-      if (!token) {
-        throw new Error(AuthConstant.INVALID_TOKEN);
-      }
-
-      let Decode_Token = await JwtUtils.verifyJWT_TOKEN(token, 'access');
-
-      let user = await AuthDal.FIND_BY_USER_ID(Decode_Token.userId);
-      const userId = String(user._id);
-
       let Created_Contact = await ContactService.create({
         name,
         email,
         phone,
         message,
-        userId,
       });
 
       SendResponse.success(

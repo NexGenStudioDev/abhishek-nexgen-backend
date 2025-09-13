@@ -37,7 +37,6 @@ class Token_Service {
         accessToken,
       );
 
-
       if (!RenewToken) {
         throw new Error(tokenConstant.ACCESS_TOKEN_UPDATE_FAILED);
       }
@@ -45,12 +44,10 @@ class Token_Service {
       let data = {
         User_Id: RenewToken.userId,
         accessToken: RenewToken.accessToken,
-      }
+      };
 
       return data;
-
-
-    } catch (error : any) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   };

@@ -9,11 +9,6 @@ interface Contact_Type extends Document {
 }
 
 let Contact_Schema = new Schema<Contact_Type>({
-  userId: {
-    type: Schema.ObjectId,
-    ref: 'Auth',
-    required: [true, 'User is required'],
-  },
   name: {
     type: String,
     required: [true, 'Name is required'],

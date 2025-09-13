@@ -3,14 +3,10 @@ import ContactController from './Contact.controller';
 import AuthMiddleware from '../../../Middleware/Auth.middleware';
 const router = Router();
 
-router.post(
-  '/v1/Contact/create',
-  AuthMiddleware.Verify_Super_Admin,
-  ContactController.create,
-);
+router.post('/v1/Contact/create', ContactController.create);
 router.get(
   '/v1/Contact/find',
-  AuthMiddleware.Verify_Super_Admin,
+  AuthMiddleware.verifyRole('admin'),
   ContactController.find,
 );
 
