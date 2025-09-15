@@ -7,6 +7,12 @@ let Project_Schema = new Schema<Project_Type>({
     ref: 'Auth',
     required: [true, 'User is required'],
   },
+  Project_Category: {
+    type: Types.ObjectId,
+    ref: 'ProjectCategory',
+    required: [true, 'Project Category is required'],
+  },
+  
   title: {
     type: String,
     required: [true, 'Title is required'],

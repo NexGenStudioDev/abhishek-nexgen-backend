@@ -12,6 +12,7 @@ export interface Project_Type {
   description: string;
   features: string[];
   bg_color: string;
+  Project_Category: ObjectId;
   techStack: string[];
   links: Link_type[];
   video: string;
